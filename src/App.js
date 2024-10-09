@@ -1,7 +1,43 @@
-import "./App.css";
+import {
+  createBrowserRouter,
+  // Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
+import ForgetPassword from "./pages/ForgetPassword";
+
+const router = createBrowserRouter([
+  // {
+  //   path: "/",
+  //   element: <Navigate to="/login" replace />, // Redirect root path to /login
+  // },
+  {
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/forget-password",
+    element: <ForgetPassword />,
+  },
+]);
 
 function App() {
-  return <div>Welcome to galvin music</div>;
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

@@ -2,7 +2,16 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["ui-sans-serif", "system-ui"],
+        serif: ["ui-serif", "Georgia", "Cambria", "Times New Roman", "serif"], // defaulting to serif
+        mono: ["ui-monospace", "SFMono-Regular"],
+      },
+      colors: {
+        "galvin-green": "#4CB050",
+      },
+    },
   },
   plugins: [],
 };

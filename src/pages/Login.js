@@ -80,7 +80,7 @@ const Login = () => {
                       Don't have account ? &nbsp;
                       <NavLink
                         to={"/signup"}
-                        className="text-white hover:text-galvin-green"
+                        className="text-white hover:text-galvin-green underline"
                       >
                         Signup for Galvin music
                       </NavLink>

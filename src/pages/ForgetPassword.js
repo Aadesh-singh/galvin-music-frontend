@@ -29,7 +29,7 @@ const ForgetPassword = () => {
                 <form onSubmit={submitHandler}>
                   <div className="flex flex-col w-[50%] mx-auto">
                     <div className="flex flex-col items-start m-2 w-full">
-                      <label htmlFor="email">Email or Username</label>
+                      <label htmlFor="email">Email or Username*</label>
                       <input
                         type="text"
                         id="email"

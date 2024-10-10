@@ -10,6 +10,9 @@ module.exports = {
       },
       colors: {
         "galvin-green": "#4CB050",
+        "galvin-grey": "#1f1f1f",
+        "galvin-bg": "#121212",
+        // bg-neutral-950 is login model background class
       },
     },
   },

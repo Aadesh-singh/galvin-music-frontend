@@ -1,10 +1,12 @@
 import { GoDotFill } from "react-icons/go";
 import { FaPlay } from "react-icons/fa";
+import { FaPause } from "react-icons/fa";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdTime } from "react-icons/io";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 import { NavLink } from "react-router-dom";
 
@@ -72,14 +74,22 @@ const Playlist = (props) => {
       <div className="container">
         {/* Playlist bottons */}
         <div className="container p-5 flex justify-start items-center w-[25%]">
-          <div className="container flex m-1">
-            <div className="text-black text-xl bg-galvin-green p-5 rounded-full cursor-pointer">
+          <div className="container flex justify-center items-center m-1">
+            {/* Conditionally render one of them */}
+            <div className="text-black text-xl mx-1 bg-galvin-green p-5 rounded-full cursor-pointer">
               <FaPlay />
             </div>
+            <div className="text-black text-xl mx-1 bg-galvin-green p-5 rounded-full cursor-pointer">
+              <FaPause />
+            </div>
           </div>
-          <div className="container flex m-1 justify-center">
+          <div className="container flex m-1 justify-center items-center">
+            {/* TODO: Conditionally redender one of two */}
             <div className="text-black text-lg bg-galvin-green p-2 rounded-full cursor-pointer">
               <FaCheck />
+            </div>
+            <div className="text-white text-4xl mx-2  rounded-full cursor-pointer">
+              <IoIosAddCircleOutline />
             </div>
           </div>
           <div className="container flex m-1">
@@ -97,7 +107,7 @@ const Playlist = (props) => {
               <div className="col-span-5">Title</div>
               <div className="col-span-2">Album</div>
               <div className="col-span-3">Date added</div>
-              <div className="col-span-1">
+              <div className="col-span-1 text-2xl px-5 py-0">
                 <span className="flex justify-end">
                   <IoMdTime />
                 </span>

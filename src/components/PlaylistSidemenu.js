@@ -12,7 +12,7 @@ const PlaylistSidemenu = (props) => {
       } flex justify-start items-center gap-2 p-2 m-2  rounded-lg  cursor-pointer relative group`}
     >
       {/* Playlist Icon */}
-      <div className="flex items-center justify-center bg-[#121212] p-5 rounded-md">
+      <div className="flex items-center justify-center relative bg-[#121212] p-5 rounded-md">
         {/* Conditional Content: Songs or Creator */}
         {props.playlist.name === "Liked Songs" ? (
           <FaHeart />
@@ -22,7 +22,7 @@ const PlaylistSidemenu = (props) => {
 
         {/* Play Icon (appears on hover) */}
         {/* Play Icon (Only visible on hover) */}
-        <AiOutlinePlayCircle className="text-black bg-[#f6f6f6] rounded-full text-3xl absolute inset-0 m-auto w-10 h-10 opacity-0 group-hover:opacity-100 -left-[175px] transition-opacity duration-300" />
+        <AiOutlinePlayCircle className="text-black bg-[#f6f6f6] rounded-full text-3xl absolute inset-0 m-auto w-10 h-10 opacity-0 group-hover:opacity-100 -left-[0%] transition-opacity duration-300" />
       </div>
 
       {/* Playlist Details */}

@@ -30,6 +30,12 @@ function ProfileDropdown(props) {
               Profile
             </NavLink>
             <NavLink
+              to="/upload-song"
+              className="block px-4 py-2 text-sm hover:bg-galvin-green"
+            >
+              Upload Song
+            </NavLink>
+            <NavLink
               to="/settings"
               className="block px-4 py-2 text-sm hover:bg-galvin-green"
             >

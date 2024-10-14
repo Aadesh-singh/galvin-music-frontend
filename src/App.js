@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import ForgetPassword from "./pages/ForgetPassword";
+import UploadSong from "./pages/UploadSong";
 
 const router = createBrowserRouter([
   // {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       <Home />
       // </ProtectedRoute>
     ),
+  },
+  {
+    path: "/upload-song",
+    element: <UploadSong />,
   },
   {
     path: "/login",

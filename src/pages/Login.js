@@ -6,6 +6,7 @@ import SocialButton from "../ui/SocialButton";
 const Login = () => {
   const submitHandler = (event) => {
     event.preventDefault();
+    console.log(event.target.value);
   };
   return (
     <>

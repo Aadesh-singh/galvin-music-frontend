@@ -2,10 +2,18 @@ import { NavLink } from "react-router-dom";
 import SocialButton from "../ui/SocialButton";
 import LayoutGrad from "../ui/LayoutGrad";
 import ModelLayout from "../ui/ModelLayout";
+import { useState } from "react";
 
 const SignUp = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cfPassword, setCfPassword] = useState("");
+
   const submitHandler = (event) => {
     event.preventDefault();
+    console.log({ firstName, lastName, email, password, cfPassword });
   };
   return (
     <>
@@ -48,6 +56,9 @@ const SignUp = () => {
                       <input
                         type="text"
                         id="fName"
+                        name="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                         placeholder="Enter First Name"
                         className="w-full p-2 rounded-md  text-black"
                       />
@@ -57,6 +68,9 @@ const SignUp = () => {
                       <input
                         type="text"
                         id="lName"
+                        name="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         placeholder="Enter Last Name"
                         className="w-full p-2 rounded-md  text-black"
                       />
@@ -66,6 +80,9 @@ const SignUp = () => {
                       <input
                         type="email"
                         id="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter Email"
                         className="w-full p-2 rounded-md  text-black"
                       />
@@ -75,6 +92,9 @@ const SignUp = () => {
                       <input
                         type="password"
                         id="password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter Password"
                         className="w-full p-2 rounded-md  text-black"
                       />
@@ -84,6 +104,9 @@ const SignUp = () => {
                       <input
                         type="password"
                         id="cfpassword"
+                        name="confirmPassword"
+                        value={cfPassword}
+                        onChange={(e) => setCfPassword(e.target.value)}
                         placeholder="Confirm Password"
                         className="w-full p-2 rounded-md  text-black"
                       />

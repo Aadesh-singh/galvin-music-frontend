@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import ForgetPassword from "./pages/ForgetPassword";
 import UploadSong from "./pages/UploadSong";
+import EmailVerify from "./pages/EmailVerify";
+import VerifyingEmail from "./pages/VerifyingEmail";
 
 const router = createBrowserRouter([
   // {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
       <Home />
       // </ProtectedRoute>
     ),
+  },
+  {
+    path: "/verfying-email",
+    element: <VerifyingEmail />,
+  },
+  {
+    path: "/email-verify",
+    element: <EmailVerify />,
   },
   {
     path: "/upload-song",

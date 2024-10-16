@@ -12,12 +12,27 @@ export const register = async (userInfo) => {
   try {
     const response = await apiClient.post(`/register`, userInfo);
 
-    return response.data;
+    return { success: true, data: response.data };
   } catch (error) {
     // If the server provides an error message, use it
     if (error.response && error.response.data && error.response.data.message) {
-      throw new Error(error.response.data.message);
+      // throw new Error(error.response.data.message);
+      return { success: false, error: error.response.data.message };
     }
-    throw new Error("Registration Failed");
+    // throw new Error("Registration Failed");
+    return { success: false, error: "Registration Failed" };
+  }
+};
+
+export const verifyEmail = async (token) => {
+  try {
+    const response = await apiClient.post(`/verifyemail?token=${token}`);
+    return { success: true, data: response.data };
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.message) {
+      // throw new Error(error.response.data.message);
+      return { success: false, error: error.response.data.message };
+    }
+    return { success: false, error: "Verification failed" };
   }
 };

@@ -1,4 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  login,
+  register,
+  verifyEmail,
+  sendVerificationEmail,
+} from "./thunk/authThunk";
 
 const initialState = {
   isAuthenticated: false,
@@ -11,40 +17,66 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    loginStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    loginSuccess: (state, action) => {
-      state.loading = false;
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-    },
-    loginFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-    },
-    registerStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    registerSuccess: (state, action) => {
-      state.loading = false;
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-    },
-    registerFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    // Login
+    builder
+      .addCase(login.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // Register
+    builder
+      .addCase(register.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // Verify Email
+    builder
+      .addCase(verifyEmail.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(verifyEmail.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // Resen Verify Email
+    builder
+      .addCase(sendVerificationEmail.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(sendVerificationEmail.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(sendVerificationEmail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
   },
 });
 

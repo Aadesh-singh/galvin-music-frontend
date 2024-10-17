@@ -1,12 +1,39 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import LayoutGrad from "../ui/LayoutGrad";
 import ModelLayout from "../ui/ModelLayout";
 import SocialButton from "../ui/SocialButton";
+import { IoEyeOffOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import LoadingButton from "../ui/LoadingButton";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { login as loginThunk } from "../store/thunk/authThunk";
 
 const Login = () => {
-  const submitHandler = (event) => {
-    event.preventDefault();
-    console.log(event.target.value);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
+  const { status, user, token } = useSelector((state) => state.auth);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const submitHandler = async (data) => {
+    try {
+      console.log(data);
+      await dispatch(loginThunk(data)).unwrap();
+      console.log("Login successfull", status, user, token);
+      toast.success("Login Successfull");
+      navigate("/");
+    } catch (error) {
+      // If there's an error, show a toast notification with the error message
+      console.log("Something went wrong while logging in.", error);
+      toast.error("Something went wrong: " + error);
+    }
   };
   return (
     <>
@@ -42,32 +69,54 @@ const Login = () => {
               <hr className="w-[80%] mx-auto my-[37px]" />
 
               <div className="container">
-                <form onSubmit={submitHandler}>
+                <form onSubmit={handleSubmit(submitHandler)}>
                   <div className="flex flex-col w-[50%] mx-auto">
                     <div className="flex flex-col items-start m-2 w-full">
                       <label htmlFor="email">Email or Username*</label>
                       <input
-                        type="text"
+                        type="email"
                         id="email"
+                        name="email"
+                        {...register("email", { required: true })}
                         placeholder="Enter Email"
                         className="w-full p-2 rounded-md  text-black"
                       />
+                      {errors.email && (
+                        <span className="text-err text-sm">
+                          Email is required.
+                        </span>
+                      )}
                     </div>
-                    <div className="flex flex-col items-start m-2 w-full">
+                    <div className="flex flex-col items-start m-2 w-full relative">
                       <label htmlFor="password">Password*</label>
                       <input
-                        type="password"
+                        type={passwordVisible ? "text" : "password"}
                         id="password"
+                        name="password"
+                        {...register("password", { required: true })}
                         placeholder="Enter Password"
                         className="w-full p-2 rounded-md  text-black"
                       />
+                      {errors.password && (
+                        <span className="text-err text-sm">
+                          Password is required.
+                        </span>
+                      )}
+                      <span
+                        className="text-red absolute top-[50%] text-xl right-0 px-2 text-black cursor-pointer"
+                        onClick={() => setPasswordVisible((prev) => !prev)}
+                      >
+                        {passwordVisible && <IoEyeOutline />}
+                        {!passwordVisible && <IoEyeOffOutline />}
+                      </span>
                     </div>
 
                     <button
+                      disabled={isSubmitting ? true : false}
                       className="bg-galvin-green w-full p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full"
                       type="submit"
                     >
-                      Login
+                      {status === "loading" ? <LoadingButton /> : "Login"}
                     </button>
                     <div className="text-right underline">
                       <NavLink

@@ -11,6 +11,7 @@ import ForgetPassword from "./pages/ForgetPassword";
 import UploadSong from "./pages/UploadSong";
 import EmailVerify from "./pages/EmailVerify";
 import VerifyingEmail from "./pages/VerifyingEmail";
+import RequestVerificationLink from "./pages/RequestVerificationLink";
 
 const router = createBrowserRouter([
   // {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       <Home />
       // </ProtectedRoute>
     ),
+  },
+  {
+    path: "/email-not-verified",
+    element: <RequestVerificationLink />,
   },
   {
     path: "/verfying-email",

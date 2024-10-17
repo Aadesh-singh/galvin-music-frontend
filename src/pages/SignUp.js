@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import { register as authRegister } from "../services/AuthService";
+import { useDispatch, useSelector } from "react-redux";
+import { register as registerThunk } from "../store/thunk/authThunk";
+// import { register as authRegister } from "../services/AuthService";
 import SocialButton from "../ui/SocialButton";
 import LayoutGrad from "../ui/LayoutGrad";
 import ModelLayout from "../ui/ModelLayout";
@@ -18,21 +20,25 @@ const SignUp = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm();
-
+  const { status } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [cfPasswordVisible, setCfPasswordVisible] = useState(false);
 
   const submitHandler = async (data) => {
-    console.log(data);
-    const res = await authRegister(data);
-    if (res.success) {
-      console.log("user registered successully.");
+    try {
+      // Dispatch the thunk and wait for the result using .unwrap()
+      await dispatch(registerThunk(data)).unwrap();
+
+      // If the result is successful, navigate to the email verification page
+      console.log("User registered successfully.");
       navigate("/email-verify");
-    } else {
-      console.log("someting went wrong while registering user.", res.error);
-      toast.error("Someting went wrong");
+    } catch (error) {
+      // If there's an error, show a toast notification with the error message
+      console.log("Something went wrong while registering the user.", error);
+      toast.error("Something went wrong: " + error);
     }
   };
   return (
@@ -111,7 +117,7 @@ const SignUp = () => {
                         name="phoneNumber"
                         {...register("phoneNumber", {
                           required: true,
-                          maxLength: 10,
+                          maxLength: 12,
                         })}
                         placeholder="Enter Last Name"
                         className="w-full p-2 rounded-md  text-black"
@@ -125,7 +131,7 @@ const SignUp = () => {
                           )}
                           {errors.phoneNumber.type === "maxLength" && (
                             <span className="text-err text-sm">
-                              Phone number should be max 10 digits
+                              Phone number should be max 12 digits
                             </span>
                           )}
                         </div>
@@ -234,7 +240,7 @@ const SignUp = () => {
                       className="bg-galvin-green w-full p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full"
                       type="submit"
                     >
-                      {isSubmitting ? <LoadingButton /> : "Signup"}
+                      {status === "loading" ? <LoadingButton /> : "Signup"}
                     </button>
 
                     <div className="text-[#575656] m-7">

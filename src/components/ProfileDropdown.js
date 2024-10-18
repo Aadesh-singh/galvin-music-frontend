@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { logout } from "../store/auth-slice";
 
 function ProfileDropdown(props) {
+  const dispatch = useDispatch();
   let name = `${props.fName[0]}${props.lName[0]}`;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +27,7 @@ function ProfileDropdown(props) {
         <div className="absolute right-0 mt-2 w-48 bg-galvin-grey text-white  rounded-md shadow-lg z-10">
           <div className="py-1">
             <NavLink
-              to="/profile"
+              to={`/profile/${props.id}`}
               className="block px-4 py-2 text-sm hover:bg-galvin-green"
             >
               Profile
@@ -42,9 +45,10 @@ function ProfileDropdown(props) {
               Settings
             </NavLink>
             <NavLink
-              to="/logout"
+              to="#"
               style={{ borderTopWidth: "1px" }}
               className="block border-t-slate-200 px-4 py-2 text-sm hover:bg-galvin-green"
+              onClick={() => dispatch(logout())}
             >
               Logout
             </NavLink>

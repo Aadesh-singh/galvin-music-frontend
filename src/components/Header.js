@@ -3,8 +3,10 @@ import { ReactComponent as HomeSvg } from "../assets/svg/home.svg";
 import { FiSearch } from "react-icons/fi";
 import { CgEnter } from "react-icons/cg";
 import ProfileDropdown from "./ProfileDropdown";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const { user, token, isAuthenticated } = useSelector((state) => state.auth);
   return (
     <section className="flex justify-between items-center bg-neutral-950 text-white">
       <div className="container flex justify-start items-center">
@@ -33,17 +35,25 @@ const Header = () => {
         </div>
       </div>
       <div className="container flex justify-end items-center">
-        <div className="container flex justify-end items-center">
-          <div className="m-2">
-            <NavLink to="/login">Login</NavLink>
+        {!isAuthenticated && (
+          <div className="container flex justify-end items-center">
+            <div className="m-2">
+              <NavLink to="/login">Login</NavLink>
+            </div>
+            <div className="m-2">
+              <NavLink to="/signup">Signup</NavLink>
+            </div>
           </div>
+        )}
+        {isAuthenticated && (
           <div className="m-2">
-            <NavLink to="/signup">Signup</NavLink>
+            <ProfileDropdown
+              fName={user.firstName}
+              lName={user.lastName}
+              id={user._id}
+            />
           </div>
-        </div>
-        <div className="m-2">
-          <ProfileDropdown fName="Aadesh" lName="singh" />
-        </div>
+        )}
       </div>
     </section>
   );

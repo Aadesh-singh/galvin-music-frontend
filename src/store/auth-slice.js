@@ -17,7 +17,23 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    restoreAuthState(state, action) {
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.loading = false;
+      state.error = null;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.token = null;
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("expirationTime");
+    },
+  },
   extraReducers: (builder) => {
     // Login
     builder
@@ -27,6 +43,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "succeeded";
+        state.isAuthenticated = true;
         state.user = action.payload.user;
         state.token = action.payload.token;
       })
@@ -64,7 +81,7 @@ const authSlice = createSlice({
         state.error = action.payload;
       });
 
-    // Resen Verify Email
+    // Resend Verify Email
     builder
       .addCase(sendVerificationEmail.pending, (state) => {
         state.status = "loading";
@@ -80,15 +97,7 @@ const authSlice = createSlice({
   },
 });
 
-export const {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  logout,
-  registerStart,
-  registerSuccess,
-  registerFailure,
-} = authSlice.actions;
+export const { restoreAuthState, logout } = authSlice.actions;
 
 // export const authActions = authSlice.actions;
 

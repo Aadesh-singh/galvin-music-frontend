@@ -1,8 +1,19 @@
+import { GoogleLogin } from "@react-oauth/google";
+
 const SocialButton = (props) => {
   const types = {
     google: "/google.png",
     facebook: "/facebook.png",
   };
+
+  const loginSuccess = (res) => {
+    props.onLoginSuccess(res);
+  };
+
+  const loginFailure = (res) => {
+    props.onLoginFailure(res);
+  };
+
   return (
     <button
       type={props.type}
@@ -17,6 +28,7 @@ const SocialButton = (props) => {
         />
       </div>
       <div className=" text-center mx-5">{props.name}</div>
+      <GoogleLogin onSuccess={loginSuccess} onError={loginFailure} />
     </button>
     // <button
     //   type={props.type}

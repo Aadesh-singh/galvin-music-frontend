@@ -79,15 +79,17 @@ export const sendVerificationEmail = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "auth/loginWithGoogle",
-  async (googleToken, thunkAPI) => {
+  async (user, thunkAPI) => {
     try {
       const response = await axiosInstance.post("/auth/google-login", {
-        token: googleToken,
+        userDetails: user,
       });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("expirationTime", new Date().getTime() + 3600000); // Optional: store expiration time
       return response.data;
     } catch (error) {
+      console.log("Error in getting auth token", error);
       return thunkAPI.rejectWithValue("Google login failed");
     }
   }

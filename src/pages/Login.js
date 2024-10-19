@@ -10,7 +10,7 @@ import LoadingButton from "../ui/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { login as loginThunk } from "../store/thunk/authThunk";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { loginWithGoogle } from "../store/thunk/authThunk";
 
 const Login = () => {
@@ -41,15 +41,19 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
       // Send the response token to the backend to verify and get the user data
-      await dispatch(loginWithGoogle(response.credential));
-      console.log("Google login successful!");
+      await dispatch(loginWithGoogle(response)).unwrap();
+      console.log("Google login successfull!");
+      toast.success("Login Successfull");
+      navigate("/");
     } catch (error) {
+      toast.error("Oops Something went wrong: " + error);
       console.error("Google login failed: ", error);
     }
   };
 
   const handleGoogleLoginFailure = (error) => {
     console.error("Google login error: ", error);
+    toast.error("Oops Something went wrong: " + error);
   };
 
   return (

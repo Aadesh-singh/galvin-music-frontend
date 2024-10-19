@@ -4,6 +4,7 @@ import {
   register,
   verifyEmail,
   sendVerificationEmail,
+  loginWithGoogle,
 } from "./thunk/authThunk";
 
 const initialState = {
@@ -48,6 +49,23 @@ const authSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(login.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // Google Login
+    builder
+      .addCase(loginWithGoogle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

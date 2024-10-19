@@ -12,7 +12,7 @@ import UploadSong from "./pages/UploadSong";
 import EmailVerify from "./pages/EmailVerify";
 import VerifyingEmail from "./pages/VerifyingEmail";
 import RequestVerificationLink from "./pages/RequestVerificationLink";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { logout, restoreAuthState } from "./store/auth-slice";
 
@@ -32,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: "/email-not-verified",
     element: <RequestVerificationLink />,
+  },
+  {
+    path: "/create-password",
+    element: <RequestVerificationLink />, //TODO: Create a password an update in backend
+  },
+  {
+    path: "/check-token-type",
+    element: <RequestVerificationLink />, //TODO: Validate token and redirect on basis of type
   },
   {
     path: "/verfying-email",
@@ -61,7 +69,7 @@ const router = createBrowserRouter([
 
 function App() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

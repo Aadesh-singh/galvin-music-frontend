@@ -6,7 +6,7 @@ import ProfileDropdown from "./ProfileDropdown";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const { user, token, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   return (
     <section className="flex justify-between items-center bg-neutral-950 text-white">
       <div className="container flex justify-start items-center">

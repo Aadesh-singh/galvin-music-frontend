@@ -14,7 +14,7 @@ const RequestVerificationLink = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm();
   const [sendVerify, setSendVerify] = useState(false);

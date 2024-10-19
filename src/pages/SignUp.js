@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { register as registerThunk } from "../store/thunk/authThunk";
+import {
+  loginWithGoogle,
+  register as registerThunk,
+} from "../store/thunk/authThunk";
 // import { register as authRegister } from "../services/AuthService";
 import SocialButton from "../ui/SocialButton";
 import LayoutGrad from "../ui/LayoutGrad";
@@ -41,6 +44,25 @@ const SignUp = () => {
       toast.error("Something went wrong: " + error);
     }
   };
+
+  const handleGoogleLoginSuccess = async (response) => {
+    try {
+      // Send the response token to the backend to verify and get the user data
+      await dispatch(loginWithGoogle(response)).unwrap();
+      console.log("Google login successfull!");
+      toast.success("User Created Successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error("Oops Something went wrong: " + error);
+      console.error("Google login failed: ", error);
+    }
+  };
+
+  const handleGoogleLoginFailure = (error) => {
+    console.error("Google login error: ", error);
+    toast.error("Oops Something went wrong: " + error);
+  };
+
   return (
     <>
       <LayoutGrad>
@@ -63,6 +85,8 @@ const SignUp = () => {
                     type="button"
                     socialType="google"
                     name="Continue with Google"
+                    onLoginSuccess={handleGoogleLoginSuccess}
+                    onLoginFailure={handleGoogleLoginFailure}
                   />
                   <SocialButton
                     type="button"

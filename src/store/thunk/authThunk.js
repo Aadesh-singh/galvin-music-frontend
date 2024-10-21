@@ -94,3 +94,50 @@ export const loginWithGoogle = createAsyncThunk(
     }
   }
 );
+
+// Thunk for Send Verification Email
+export const sendForgotPasswordLink = createAsyncThunk(
+  "auth/sendForgotPasswordLink",
+  async (email, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post(
+        `/auth/sendForgotPasswordLink?email=${email}`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Password Reset Email not sent"
+      );
+    }
+  }
+);
+
+// Thunk for Verifying token
+export const verifyToken = createAsyncThunk(
+  "auth/verifyToken",
+  async (token, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post(`/verifyToken?token=${token}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Error in verifying token"
+      );
+    }
+  }
+);
+
+// Thunk for Verifying token
+export const updatePassword = createAsyncThunk(
+  "auth/updatePassword",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post(`/auth/updatePassword`, data);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Error in verifying token"
+      );
+    }
+  }
+);

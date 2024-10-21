@@ -81,11 +81,11 @@ const Login = () => {
                     onLoginSuccess={handleGoogleLoginSuccess}
                     onLoginFailure={handleGoogleLoginFailure}
                   />
-                  <SocialButton
+                  {/* <SocialButton
                     type="button"
                     socialType="facebook"
                     name="Continue with Facebook"
-                  />
+                  /> */}
                 </div>
               </div>
 
@@ -143,7 +143,7 @@ const Login = () => {
                     </button>
                     <div className="text-right underline">
                       <NavLink
-                        to={"/forget-password"}
+                        to={"/forgot-password"}
                         className="hover:text-galvin-green"
                       >
                         Forgot Password?

@@ -5,6 +5,8 @@ import {
   verifyEmail,
   sendVerificationEmail,
   loginWithGoogle,
+  sendForgotPasswordLink,
+  updatePassword,
 } from "./thunk/authThunk";
 
 const initialState = {
@@ -109,6 +111,34 @@ const authSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(sendVerificationEmail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // Forgot Password
+    builder
+      .addCase(sendForgotPasswordLink.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(sendForgotPasswordLink.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(sendForgotPasswordLink.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // Update Password
+    builder
+      .addCase(updatePassword.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(updatePassword.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

@@ -88,11 +88,11 @@ const SignUp = () => {
                     onLoginSuccess={handleGoogleLoginSuccess}
                     onLoginFailure={handleGoogleLoginFailure}
                   />
-                  <SocialButton
+                  {/* <SocialButton
                     type="button"
                     socialType="facebook"
                     name="Continue with Facebook"
-                  />
+                  /> */}
                 </div>
               </div>
 

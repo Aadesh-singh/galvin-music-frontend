@@ -15,6 +15,8 @@ import RequestVerificationLink from "./pages/RequestVerificationLink";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { logout, restoreAuthState } from "./store/auth-slice";
+import CheckTokenType from "./pages/CheckTokenType";
+import CreatePassword from "./pages/CreatePassword";
 
 const router = createBrowserRouter([
   // {
@@ -35,11 +37,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/create-password",
-    element: <RequestVerificationLink />, //TODO: Create a password an update in backend
+    element: <CreatePassword />, //TODO: Create a password an update in backend
   },
   {
     path: "/check-token-type",
-    element: <RequestVerificationLink />, //TODO: Validate token and redirect on basis of type
+    element: <CheckTokenType />, //TODO: Validate token and redirect on basis of type
   },
   {
     path: "/verfying-email",
@@ -62,7 +64,7 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/forget-password",
+    path: "/forgot-password",
     element: <ForgetPassword />,
   },
 ]);

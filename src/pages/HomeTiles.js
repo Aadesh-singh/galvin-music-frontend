@@ -35,7 +35,7 @@ const HomeTiles = () => {
                 Yo Yo Honey Singh
               </NavLink>
             </div>
-            <div className="text-galvin-text-grey">Artist</div>
+            <div className="text-galvin-text-grey">Song</div>
           </div>
           <div className="mx-2">
             <div className="img-container w-[150px] h-[150px] my-5 overflow-hidden">
@@ -53,7 +53,7 @@ const HomeTiles = () => {
                 Yo Yo Honey Singh
               </NavLink>
             </div>
-            <div className="text-galvin-text-grey">Artist</div>
+            <div className="text-galvin-text-grey">Song</div>
           </div>
           <div className="mx-2">
             <div className="img-container w-[150px] h-[150px] my-5 overflow-hidden">
@@ -71,7 +71,7 @@ const HomeTiles = () => {
                 Yo Yo Honey Singh
               </NavLink>
             </div>
-            <div className="text-galvin-text-grey">Artist</div>
+            <div className="text-galvin-text-grey">Song</div>
           </div>
           <div className="mx-2">
             <div className="img-container w-[150px] h-[150px] my-5 overflow-hidden">
@@ -89,7 +89,7 @@ const HomeTiles = () => {
                 Yo Yo Honey Singh
               </NavLink>
             </div>
-            <div className="text-galvin-text-grey">Artist</div>
+            <div className="text-galvin-text-grey">Song</div>
           </div>
           <div className="mx-2">
             <div className="img-container w-[150px] h-[150px] my-5 overflow-hidden">

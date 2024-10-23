@@ -12,8 +12,15 @@ module.exports = {
         "galvin-green": "#4CB050",
         "galvin-grey": "#1f1f1f",
         "galvin-bg": "#121212",
+        "galvin-text-grey": "#837d7d",
         err: "#ff0000",
         // bg-neutral-950 is login model background class
+      },
+      scrollSnapType: {
+        x: "x mandatory",
+      },
+      scrollSnapAlign: {
+        start: "start",
       },
     },
   },

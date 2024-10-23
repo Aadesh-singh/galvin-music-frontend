@@ -7,6 +7,7 @@ import { AiOutlinePlayCircle } from "react-icons/ai";
 const PlaylistSidemenu = (props) => {
   return (
     <div
+      onClick={props.onClick}
       className={`${
         props.playlist.selected === true ? "bg-[#3d3c3c]" : "hover:bg-gray-700"
       } flex justify-start items-center gap-2 p-2 m-2  rounded-lg  cursor-pointer relative group`}

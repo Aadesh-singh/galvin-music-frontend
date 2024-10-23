@@ -17,6 +17,11 @@ import { useEffect } from "react";
 import { logout, restoreAuthState } from "./store/auth-slice";
 import CheckTokenType from "./pages/CheckTokenType";
 import CreatePassword from "./pages/CreatePassword";
+import HomeTiles from "./pages/HomeTiles";
+import Playlist from "./components/Playlist";
+import Artist from "./pages/Artist";
+import AllArtist from "./pages/AllArtist";
+import AllPlaylists from "./pages/AllPlaylists";
 
 const router = createBrowserRouter([
   // {
@@ -30,6 +35,14 @@ const router = createBrowserRouter([
       <Home />
       // </ProtectedRoute>
     ),
+    children: [
+      { index: true, element: <HomeTiles /> },
+      { path: "/playlist/:id", element: <Playlist /> },
+      { path: "/artist/:id", element: <Artist /> },
+      { path: "/artists", element: <AllArtist /> },
+      { path: "/playlists", element: <AllPlaylists /> },
+      { path: "/trending-songs", element: <AllPlaylists /> },
+    ],
   },
   {
     path: "/email-not-verified",

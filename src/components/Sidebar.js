@@ -1,13 +1,57 @@
 import { VscLibrary } from "react-icons/vsc";
 import { IoMdAdd } from "react-icons/io";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaCheck } from "react-icons/fa6";
 import { useEffect, useRef, useState } from "react";
 import PlaylistSidemenu from "./PlaylistSidemenu";
 
+const PlaylistArray = [
+  {
+    id: "liked",
+    name: "Liked Songs",
+    type: "Playlist",
+    creator: "Aadesh Singh",
+    totalSongs: "0",
+    selected: false,
+  },
+  {
+    id: "1",
+    name: "Playlist1",
+    type: "Playlist",
+    creator: "Aadesh Singh",
+    totalSongs: "0",
+    selected: false,
+  },
+  {
+    id: "2",
+    name: "Playlist2",
+    type: "Playlist",
+    creator: "Aadesh Singh",
+    totalSongs: "0",
+    selected: false,
+  },
+  {
+    id: "3",
+    name: "Playlist3",
+    type: "Playlist",
+    creator: "Aadesh Singh",
+    totalSongs: "0",
+    selected: false,
+  },
+  {
+    id: "4",
+    name: "Playlist4",
+    type: "Playlist",
+    creator: "Aadesh Singh",
+    totalSongs: "0",
+    selected: false,
+  },
+];
+
 const Sidebar = (props) => {
+  const navigate = useNavigate();
   const [isSidebarSearchVisible, setIsSidebarSearchvisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchRef = useRef(null);
@@ -37,6 +81,18 @@ const Sidebar = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSidebarSearchVisible]);
+
+  const handlePlaylistClick = (index, id) => {
+    console.log("id click", id);
+    PlaylistArray.forEach((playlist) => {
+      if (playlist.id === id) {
+        playlist.selected = true;
+        navigate("/playlist/" + playlist.id);
+      } else {
+        playlist.selected = false;
+      }
+    });
+  };
 
   return (
     <section className={`${props.className} bg-galvin-bg m-2 p-5 rounded-md`}>
@@ -139,47 +195,15 @@ const Sidebar = (props) => {
 
       {/* Side menu playlist */}
       <div className="side-container container max-h-[74%] overflow-y-auto scrollbar-thinscrollbar-thumb-gray-500 scrollbar-track-gray-900 hover:scrollbar-thumb-gray-400">
-        <PlaylistSidemenu
-          playlist={{
-            name: "Liked Songs",
-            type: "Playlist",
-            creator: "Aadesh Singh",
-            totalSongs: "0",
-          }}
-        />
-        <PlaylistSidemenu
-          playlist={{
-            name: "Feel the Music",
-            type: "Playlist",
-            creator: "Aadesh Singh",
-            totalSongs: "0",
-            selected: true,
-          }}
-        />
-        <PlaylistSidemenu
-          playlist={{
-            name: "Feel the Music",
-            type: "Playlist",
-            creator: "Aadesh Singh",
-            totalSongs: "0",
-          }}
-        />
-        <PlaylistSidemenu
-          playlist={{
-            name: "Feel the Music",
-            type: "Playlist",
-            creator: "Aadesh Singh",
-            totalSongs: "0",
-          }}
-        />
-        <PlaylistSidemenu
-          playlist={{
-            name: "Feel the Music",
-            type: "Playlist",
-            creator: "Aadesh Singh",
-            totalSongs: "0",
-          }}
-        />
+        {PlaylistArray.map((playlist, index) => (
+          <PlaylistSidemenu
+            onClick={() => {
+              handlePlaylistClick(index, playlist.id);
+            }}
+            playlist={playlist}
+            key={playlist.id}
+          />
+        ))}
       </div>
     </section>
   );

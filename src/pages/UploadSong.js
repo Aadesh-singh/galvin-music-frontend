@@ -295,7 +295,7 @@ const UploadSong = () => {
                       <label htmlFor="lyrics">Lyrics</label>
                       <textarea
                         id="lyrics"
-                        {...register("lyrics", { required: true })}
+                        {...register("lyrics")}
                         placeholder="Lyrics"
                         className="w-full p-2 rounded-md  text-black"
                       ></textarea>

@@ -22,6 +22,7 @@ import Playlist from "./components/Playlist";
 import Artist from "./pages/Artist";
 import AllArtist from "./pages/AllArtist";
 import AllPlaylists from "./pages/AllPlaylists";
+import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
   // {
@@ -65,9 +66,16 @@ const router = createBrowserRouter([
     element: <EmailVerify />,
   },
   {
-    path: "/upload-song",
-    element: <UploadSong />,
+    path: "/settings",
+    element: <Settings />,
+    children: [
+      {
+        path: "upload-song",
+        element: <UploadSong />,
+      },
+    ],
   },
+
   {
     path: "/login",
     element: <Login />,

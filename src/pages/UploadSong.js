@@ -11,11 +11,29 @@ import LoadingButton from "../ui/LoadingButton";
 const UploadSong = () => {
   const [fileName, setFileName] = useState("");
   const dispatch = useDispatch();
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors, isSubmitting },
-  // } = useForm();
+  const [selectedOption, setSelectedOption] = useState("album");
+
+  const albums = ["Album A", "Album B", "Album C", "Album D"]; // List of album options
+
+  const handleAlbumChange = (event) => {
+    const selected = event.target.value;
+    // setSelectedAlbum(selected);
+    console.log("Selected Album:", selected); // Logs selected album to console
+  };
+
+  const playlists = ["Playlist A", "Playlist B", "Playlist C", "Playlist D"]; // List of album options
+
+  const handlePlaylistChange = (event) => {
+    const selected = event.target.value;
+    // setSelectedAlbum(selected);
+    console.log("Selected Playlist:", selected); // Logs selected album to console
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    console.log("Selected:", event.target.value); // Logs selected value to the console
+  };
+
   const {
     register,
     control,
@@ -287,6 +305,109 @@ const UploadSong = () => {
                     )}
                   />
                 </div>
+                {/* Album or playlist */}
+                <div className="flex flex-col items-start m-2 w-[40%]">
+                  <label>Create Under*</label>
+
+                  <div className="flex items-center mt-2">
+                    <label className="mr-4">
+                      <input
+                        type="radio"
+                        name="createUnder"
+                        value="album"
+                        {...register("createUnder", {
+                          required: "Please select either Album or Playlist.",
+                          onChange: handleOptionChange, // Calls the onChange handler
+                        })}
+                        className="mr-2"
+                      />
+                      Album
+                    </label>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="createUnder"
+                        value="playlist"
+                        {...register("createUnder", {
+                          required: "Please select either Album or Playlist.",
+                          onChange: handleOptionChange, // Calls the onChange handler
+                        })}
+                        className="mr-2"
+                      />
+                      Playlist
+                    </label>
+                  </div>
+
+                  {errors.createUnder && (
+                    <span className="text-err text-sm">
+                      {errors.createUnder.message}
+                    </span>
+                  )}
+                </div>
+                {/* Select from Album or playlist */}
+                {selectedOption && selectedOption === "album" ? (
+                  <div className="flex flex-col items-start m-2 w-[40%]">
+                    <label htmlFor="albumSelect">Select from Album*</label>
+
+                    <select
+                      id="albumSelect"
+                      {...register("album", {
+                        required: "Please select an album.",
+                        onChange: handleAlbumChange, // Calls the onChange handler
+                      })}
+                      className="p-2 rounded-md text-black w-full"
+                      defaultValue="" // Placeholder option
+                    >
+                      <option value="" disabled>
+                        -- Select an Album --
+                      </option>
+                      {albums.map((album, index) => (
+                        <option key={index} value={album}>
+                          {album}
+                        </option>
+                      ))}
+                    </select>
+
+                    {errors.album && (
+                      <span className="text-err text-sm">
+                        {errors.album.message}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-start m-2 w-[40%]">
+                    <label htmlFor="playlistSelect">
+                      Select from Playlist*
+                    </label>
+
+                    <select
+                      id="playlistSelect"
+                      {...register("playlist", {
+                        required: "Please select an Playlist.",
+                        onChange: handlePlaylistChange, // Calls the onChange handler
+                      })}
+                      className="p-2 rounded-md text-black w-full"
+                      defaultValue="" // Placeholder option
+                    >
+                      <option value="" disabled>
+                        -- Select an Playlist --
+                      </option>
+                      {playlists.map((playlist, index) => (
+                        <option key={index} value={playlist}>
+                          {playlist}
+                        </option>
+                      ))}
+                    </select>
+
+                    {errors.playlist && (
+                      <span className="text-err text-sm">
+                        {errors.playlist.message}
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 {/* Lyrics */}
                 <div className="flex flex-col items-start m-2 w-[40%]">
                   <label htmlFor="lyrics">Lyrics</label>

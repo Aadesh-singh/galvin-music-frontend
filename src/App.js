@@ -23,6 +23,9 @@ import Artist from "./pages/Artist";
 import AllArtist from "./pages/AllArtist";
 import AllPlaylists from "./pages/AllPlaylists";
 import Settings from "./pages/Settings";
+import CreateAlbum from "./pages/CreateAlbum";
+import CreatePlaylist from "./pages/CreatePlaylist";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   // {
@@ -69,6 +72,18 @@ const router = createBrowserRouter([
     path: "/settings",
     element: <Settings />,
     children: [
+      {
+        index: true,
+        element: <Profile />,
+      },
+      {
+        path: "create-playlist",
+        element: <CreatePlaylist />,
+      },
+      {
+        path: "create-album",
+        element: <CreateAlbum />,
+      },
       {
         path: "upload-song",
         element: <UploadSong />,

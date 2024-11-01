@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 // import { FaMusic } from "react-icons/fa6";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadSong } from "../store/thunk/authThunk";
 import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
+import { createAlbum } from "../store/thunk/albumThunk";
 
 const CreateAlbum = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,28 @@ const CreateAlbum = () => {
   } = useForm();
   const { status } = useSelector((state) => state.auth);
   const [hashTagList, sethashTagList] = useState([]);
+
+  const [inputValue, setInputValue] = useState(""); // Local state for the immediate input value
+  const [debouncedValue, setDebouncedValue] = useState(""); // State for the debounced value
+  useEffect(() => {
+    // Set up debounce
+    const handler = setTimeout(() => {
+      setDebouncedValue(inputValue); // Update debounced value after delay
+    }, 500); // Adjust delay as needed
+
+    // Clear timeout if input changes within delay period
+    return () => clearTimeout(handler);
+  }, [inputValue]);
+
+  useEffect(() => {
+    // Update form value in react-hook-form when debounced value changes
+    setValue("name", debouncedValue);
+    console.log("debounce of value: ", debouncedValue);
+  }, [debouncedValue, setValue]);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value); // Update input value on every keystroke
+  };
 
   //hashtag
   const addHashTag = (e) => {
@@ -53,7 +76,7 @@ const CreateAlbum = () => {
     }
 
     try {
-      //   await dispatch(uploadSong(formData)).unwrap();
+      await dispatch(createAlbum(formData)).unwrap();
       toast.success("Album Created Successfully.");
       reset();
       sethashTagList([]);
@@ -103,6 +126,8 @@ const CreateAlbum = () => {
                     {...register("name", { required: true })}
                     placeholder="Enter Song Name"
                     className="w-full p-2 rounded-md text-black"
+                    value={inputValue}
+                    onChange={handleInputChange}
                   />
                   {errors.name && (
                     <span className="text-err text-sm">

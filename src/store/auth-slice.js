@@ -143,20 +143,6 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       });
-
-    // Upload song
-    builder
-      .addCase(uploadSong.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(uploadSong.fulfilled, (state) => {
-        state.status = "succeeded";
-      })
-      .addCase(uploadSong.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      });
   },
 });
 

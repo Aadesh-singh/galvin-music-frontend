@@ -1,12 +1,16 @@
 import { NavLink } from "react-router-dom";
 // import { FaMusic } from "react-icons/fa6";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 // import { uploadSong } from "../store/thunk/authThunk";
 import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
+import {
+  createPlaylist,
+  playlistTitleExist,
+} from "../store/thunk/playlistThunk";
 
 const CreatePlaylist = () => {
   const dispatch = useDispatch();
@@ -16,10 +20,46 @@ const CreatePlaylist = () => {
     handleSubmit,
     setValue,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm();
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useSelector((state) => state.playlist);
   const [hashTagList, sethashTagList] = useState([]);
+
+  const [inputValue, setInputValue] = useState(""); // Local state for the immediate input value
+  const [debouncedValue, setDebouncedValue] = useState(""); // State for the debounced value
+  const [isTitleAvailable, setIsTitleAvailable] = useState(null); // State for the debounced value
+
+  useEffect(() => {
+    // setup a debouce
+    const interval = setTimeout(() => {
+      setDebouncedValue(inputValue); //update value after delay
+    }, 500);
+
+    //clear timeout if input changes within 500ms
+    return () => clearInterval(interval);
+  }, [inputValue]);
+
+  useEffect(() => {
+    // Update form value in react-hook-form when debounced value changes
+    setValue("name", debouncedValue);
+    console.log("debounced value of playlist: ", debouncedValue);
+
+    async function abc(val) {
+      try {
+        if (val.trim() === "") return;
+        let resp = await dispatch(playlistTitleExist(val)).unwrap();
+        console.log("respL ", resp);
+        setIsTitleAvailable(resp.available);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    }
+    abc(debouncedValue);
+  }, [setValue, debouncedValue, dispatch]);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value); // Update input value on every keystroke
+  };
 
   //hashtag
   const addHashTag = (e) => {
@@ -45,17 +85,16 @@ const CreatePlaylist = () => {
     // Create a FormData object and append each field
     const formData = new FormData();
     formData.append("name", data.name);
-    formData.append("hashtag", JSON.stringify(data.hashtag)); // Convert array to JSON string
+    formData.append("hashtags", JSON.stringify(data.hashtag)); // Convert array to JSON string
     formData.append("description", data.description);
 
-    if (data.song) {
-      formData.append("song", data.song[0]); // Assuming `data.song` is an array of files
-    }
-
     try {
-      //   await dispatch(uploadSong(formData)).unwrap();
+      await dispatch(createPlaylist(formData)).unwrap();
       toast.success("Playlist Created Successfully.");
       reset();
+      setInputValue("");
+      setDebouncedValue("");
+      setIsTitleAvailable(null);
       sethashTagList([]);
     } catch (error) {
       console.log("Error in creating Playlist", error);
@@ -103,10 +142,30 @@ const CreatePlaylist = () => {
                     {...register("name", { required: true })}
                     placeholder="Enter Song Name"
                     className="w-full p-2 rounded-md text-black"
+                    value={inputValue}
+                    onChange={handleInputChange}
                   />
                   {errors.name && (
                     <span className="text-err text-sm">
                       Playlist Name is required.
+                    </span>
+                  )}
+                  {isDirty && (
+                    <span
+                      className={`text-sm ${
+                        isTitleAvailable ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {status === "loading" && (
+                        <span>
+                          <LoadingButton /> &nbsp; Checking
+                        </span>
+                      )}
+                      {isTitleAvailable === null
+                        ? ""
+                        : isTitleAvailable
+                        ? "Title is available"
+                        : "Title is unavailable"}
                     </span>
                   )}
                 </div>
@@ -162,8 +221,11 @@ const CreatePlaylist = () => {
                 </div>
 
                 <button
-                  className="bg-galvin-green w-[60%] p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full"
+                  className={`bg-galvin-green w-[60%] p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full ${
+                    isTitleAvailable ? "cursor-pointer" : "cursor-not-allowed"
+                  }`}
                   type="submit"
+                  disabled={!isTitleAvailable}
                 >
                   {status === "loading" ? <LoadingButton /> : "Create Playlist"}
                 </button>

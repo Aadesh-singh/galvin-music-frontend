@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadSong } from "../store/thunk/authThunk";
+// import { uploadSong } from "../store/thunk/authThunk";
 import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
 

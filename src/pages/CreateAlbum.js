@@ -4,10 +4,10 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadSong } from "../store/thunk/authThunk";
+// import { uploadSong } from "../store/thunk/authThunk";
 import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
-import { createAlbum } from "../store/thunk/albumThunk";
+import { albumTitleExist, createAlbum } from "../store/thunk/albumThunk";
 
 const CreateAlbum = () => {
   const dispatch = useDispatch();
@@ -17,13 +17,14 @@ const CreateAlbum = () => {
     handleSubmit,
     setValue,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm();
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useSelector((state) => state.album);
   const [hashTagList, sethashTagList] = useState([]);
 
   const [inputValue, setInputValue] = useState(""); // Local state for the immediate input value
   const [debouncedValue, setDebouncedValue] = useState(""); // State for the debounced value
+  const [isTitleAvailable, setIsTitleAvailable] = useState(null); // State for the debounced value
   useEffect(() => {
     // Set up debounce
     const handler = setTimeout(() => {
@@ -38,7 +39,19 @@ const CreateAlbum = () => {
     // Update form value in react-hook-form when debounced value changes
     setValue("name", debouncedValue);
     console.log("debounce of value: ", debouncedValue);
-  }, [debouncedValue, setValue]);
+
+    async function abc(val) {
+      try {
+        if (val.trim() === "") return;
+        let resp = await dispatch(albumTitleExist(val)).unwrap();
+        console.log("respL ", resp);
+        setIsTitleAvailable(resp.available);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    }
+    abc(debouncedValue);
+  }, [debouncedValue, setValue, dispatch, setIsTitleAvailable]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value); // Update input value on every keystroke
@@ -68,17 +81,16 @@ const CreateAlbum = () => {
     // Create a FormData object and append each field
     const formData = new FormData();
     formData.append("name", data.name);
-    formData.append("hashtag", JSON.stringify(data.hashtag)); // Convert array to JSON string
+    formData.append("hashtags", JSON.stringify(data.hashtag)); // Convert array to JSON string
     formData.append("description", data.description);
-
-    if (data.song) {
-      formData.append("song", data.song[0]); // Assuming `data.song` is an array of files
-    }
 
     try {
       await dispatch(createAlbum(formData)).unwrap();
       toast.success("Album Created Successfully.");
       reset();
+      setInputValue("");
+      setDebouncedValue("");
+      setIsTitleAvailable(null);
       sethashTagList([]);
     } catch (error) {
       console.log("Error in creating Album", error);
@@ -134,6 +146,24 @@ const CreateAlbum = () => {
                       Album Name is required.
                     </span>
                   )}
+                  {isDirty && (
+                    <span
+                      className={`text-sm ${
+                        isTitleAvailable ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {status === "loading" && (
+                        <span>
+                          <LoadingButton /> &nbsp; Checking
+                        </span>
+                      )}
+                      {isTitleAvailable === null
+                        ? ""
+                        : isTitleAvailable
+                        ? "Title is available"
+                        : "Title is unavailable"}
+                    </span>
+                  )}
                 </div>
                 {/* hashtag */}
                 <div className="flex flex-col items-start m-2 w-[60%]">
@@ -187,8 +217,11 @@ const CreateAlbum = () => {
                 </div>
 
                 <button
-                  className="bg-galvin-green w-[60%] p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full"
+                  className={`bg-galvin-green w-[60%] p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full ${
+                    isTitleAvailable ? "cursor-pointer" : "cursor-not-allowed"
+                  }`}
                   type="submit"
+                  disabled={!isTitleAvailable}
                 >
                   {status === "loading" ? <LoadingButton /> : "Create Album"}
                 </button>

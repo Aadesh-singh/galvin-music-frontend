@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 // import { FaMusic } from "react-icons/fa6";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadSong } from "../store/thunk/songThunk";
@@ -9,11 +9,18 @@ import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
 
 const UploadSong = () => {
+  const { status: albumStatus } = useSelector((state) => state.album);
+  const { status: playlistStatus } = useSelector((state) => state.playlist);
+
   const [fileName, setFileName] = useState("");
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("album");
 
-  const albums = ["Album A", "Album B", "Album C", "Album D"]; // List of album options
+  // const albums = ["Album A", "Album B", "Album C", "Album D"]; // List of album options
+  const [albums, setAlbums] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {}, []);
 
   const handleAlbumChange = (event) => {
     const selected = event.target.value;
@@ -21,7 +28,7 @@ const UploadSong = () => {
     console.log("Selected Album:", selected); // Logs selected album to console
   };
 
-  const playlists = ["Playlist A", "Playlist B", "Playlist C", "Playlist D"]; // List of album options
+  // const playlists = ["Playlist A", "Playlist B", "Playlist C", "Playlist D"]; // List of album options
 
   const handlePlaylistChange = (event) => {
     const selected = event.target.value;

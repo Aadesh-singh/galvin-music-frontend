@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadSong } from "../store/thunk/songThunk";
 import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
+import useCookie from "../hooks/useCookie";
+import { fetchPlaylistOfUser } from "../store/thunk/playlistThunk";
 
 const UploadSong = () => {
   const { status: albumStatus } = useSelector((state) => state.album);
@@ -20,7 +22,17 @@ const UploadSong = () => {
   const [albums, setAlbums] = useState([]);
   const [playlists, setPlaylists] = useState([]);
 
-  useEffect(() => {}, []);
+  const [userId, setUserId, removeUserId] = useCookie("userId");
+  console.log("userId: ", userId);
+  useEffect(() => {
+    async function fetchAlbumPlaylist() {
+      try {
+        console.log("userId: ", userId);
+        // const response = await dispatch(fetchPlaylistOfUser({id: userId}))
+      } catch (error) {}
+    }
+    fetchAlbumPlaylist();
+  }, []);
 
   const handleAlbumChange = (event) => {
     const selected = event.target.value;

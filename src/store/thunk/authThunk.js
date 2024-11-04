@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../apis/axios";
+import Cookies from "js-cookie";
 
 // Thunk for login
 export const login = createAsyncThunk(
@@ -10,6 +11,8 @@ export const login = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("expirationTime", new Date().getTime() + 3600000);
+      // Set cookie directly with js-cookie
+      Cookies.set("userId", response.data.user._id, { expires: 7 }); // Expires in 7 days
 
       return response.data;
     } catch (error) {
@@ -87,6 +90,9 @@ export const loginWithGoogle = createAsyncThunk(
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("expirationTime", new Date().getTime() + 3600000); // Optional: store expiration time
+      // Set cookie directly with js-cookie
+      Cookies.set("userId", response.data.user._id, { expires: 7 }); // Expires in 7 days
+
       return response.data;
     } catch (error) {
       console.log("Error in getting auth token", error);

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   login,
@@ -36,6 +37,7 @@ const authSlice = createSlice({
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       localStorage.removeItem("expirationTime");
+      Cookies.remove("userId");
     },
   },
   extraReducers: (builder) => {

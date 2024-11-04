@@ -1,5 +1,5 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import FacebookLogin from "react-facebook-login";
+// import FacebookLogin from "react-facebook-login";
 import axios from "axios";
 
 const SocialButton = (props) => {
@@ -27,13 +27,13 @@ const SocialButton = (props) => {
     scope: "openid profile email",
   });
 
-  const responseFacebook = (response) => {
-    console.log(response);
-    // Handle the response from Facebook
-    if (response.accessToken) {
-      // Make API call to your backend for further processing
-    }
-  };
+  // const responseFacebook = (response) => {
+  //   console.log(response);
+  //   // Handle the response from Facebook
+  //   if (response.accessToken) {
+  //     // Make API call to your backend for further processing
+  //   }
+  // };
 
   return (
     <div>
@@ -54,7 +54,7 @@ const SocialButton = (props) => {
           <div className=" text-center mx-5">{props.name}</div>
         </button>
       )}
-      {props.socialType === "facebook" && (
+      {/* {props.socialType === "facebook" && (
         // <button
         //   type={props.type}
         //   className={`${props.className} min-w-[61%] mx-auto flex justify-center items-center mt-2 border-2 py-[10px] px-[1.5rem] rounded-full border-white border-solid`}
@@ -90,7 +90,7 @@ const SocialButton = (props) => {
             // icon="fa-facebook" // Optional icon
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

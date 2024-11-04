@@ -35,3 +35,21 @@ export const playlistTitleExist = createAsyncThunk(
     }
   }
 );
+
+//Thunk for playlistTitleExist
+export const fetchPlaylistOfUser = createAsyncThunk(
+  "playlist/fetchPlaylistOfUser",
+  async (formData, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post(
+        `/playlist/fetchPlaylistOfUser`,
+        formData
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Error in Fetching user playlists"
+      );
+    }
+  }
+);

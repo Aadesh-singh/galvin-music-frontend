@@ -28,11 +28,11 @@ const UploadSong = () => {
     async function fetchAlbumPlaylist() {
       try {
         console.log("userId: ", userId);
-        // const response = await dispatch(fetchPlaylistOfUser({id: userId}))
+        const response = await dispatch(fetchPlaylistOfUser({ id: userId }));
       } catch (error) {}
     }
     fetchAlbumPlaylist();
-  }, []);
+  }, [userId]);
 
   const handleAlbumChange = (event) => {
     const selected = event.target.value;

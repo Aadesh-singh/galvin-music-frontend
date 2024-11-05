@@ -9,10 +9,12 @@ import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
 import useCookie from "../hooks/useCookie";
 import { fetchPlaylistOfUser } from "../store/thunk/playlistThunk";
+import { fetchUserData } from "../store/thunk/userThunk";
 
 const UploadSong = () => {
   const { status: albumStatus } = useSelector((state) => state.album);
   const { status: playlistStatus } = useSelector((state) => state.playlist);
+  const { status: songStatus } = useSelector((state) => state.song);
 
   const [fileName, setFileName] = useState("");
   const dispatch = useDispatch();
@@ -28,11 +30,16 @@ const UploadSong = () => {
     async function fetchAlbumPlaylist() {
       try {
         console.log("userId: ", userId);
-        const response = await dispatch(fetchPlaylistOfUser({ id: userId }));
+        const response = await dispatch(fetchUserData({ id: userId }));
+        console.log("fetched userdata", response.payload.user);
+        console.log("fetched userdata", response.payload.user.playlists);
+        console.log("fetched userdata", response.payload.user.albums);
+        setPlaylists(response.payload.user.playlists);
+        setAlbums(response.payload.user.albums);
       } catch (error) {}
     }
     fetchAlbumPlaylist();
-  }, [userId]);
+  }, [userId, dispatch]);
 
   const handleAlbumChange = (event) => {
     const selected = event.target.value;
@@ -61,7 +68,7 @@ const UploadSong = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const { status } = useSelector((state) => state.auth);
+  const { status: authStatus } = useSelector((state) => state.auth);
   const [lyricByList, setLyricByList] = useState([]);
   const [musicByList, setMusicByList] = useState([]);
   const [singerList, setSingerList] = useState([]);
@@ -131,6 +138,7 @@ const UploadSong = () => {
 
   const submitHandler = async (data) => {
     console.log("data", data);
+    // return;
 
     // Create a FormData object and append each field
     const formData = new FormData();
@@ -140,6 +148,9 @@ const UploadSong = () => {
     formData.append("singers", JSON.stringify(data.singers));
     formData.append("lyrics", data.lyrics);
     formData.append("miscInfo", data.miscInfo);
+    formData.append("createUnder", data.createUnder);
+    formData.append("album", data.album);
+    formData.append("playlist", data.playlist);
 
     if (data.song) {
       formData.append("song", data.song[0]); // Assuming `data.song` is an array of files
@@ -381,12 +392,23 @@ const UploadSong = () => {
                       <option value="" disabled>
                         -- Select an Album --
                       </option>
-                      {albums.map((album, index) => (
-                        <option key={index} value={album}>
-                          {album}
-                        </option>
-                      ))}
+                      {albums &&
+                        albums.map((album, index) => (
+                          <option key={index} value={album._id}>
+                            {album.name}
+                          </option>
+                        ))}
                     </select>
+                    <div className="w-full text-right">
+                      {albums.length <= 0 && (
+                        <NavLink
+                          to={`/settings/create-album`}
+                          className="hover:text-galvin-green cursor-pointer"
+                        >
+                          No Album ? create One
+                        </NavLink>
+                      )}
+                    </div>
 
                     {errors.album && (
                       <span className="text-err text-sm">
@@ -412,12 +434,23 @@ const UploadSong = () => {
                       <option value="" disabled>
                         -- Select an Playlist --
                       </option>
-                      {playlists.map((playlist, index) => (
-                        <option key={index} value={playlist}>
-                          {playlist}
-                        </option>
-                      ))}
+                      {playlists &&
+                        playlists.map((playlist, index) => (
+                          <option key={index} value={playlist._id}>
+                            {playlist.name}
+                          </option>
+                        ))}
                     </select>
+                    <div className="w-full text-right">
+                      {playlists.length <= 0 && (
+                        <NavLink
+                          to={`/settings/create-playlist`}
+                          className="hover:text-galvin-green cursor-pointer text-right"
+                        >
+                          No Playlist ? create One
+                        </NavLink>
+                      )}
+                    </div>
 
                     {errors.playlist && (
                       <span className="text-err text-sm">
@@ -487,7 +520,7 @@ const UploadSong = () => {
                   className="bg-galvin-green w-[60%] p-2 m-2 text-black font-extrabold border-0 border-white border-solid rounded-full"
                   type="submit"
                 >
-                  {status === "loading" ? <LoadingButton /> : "Upload"}
+                  {songStatus === "loading" ? <LoadingButton /> : "Upload"}
                 </button>
                 {/* <div className="text-[#575656] m-7"> */}
                 <NavLink

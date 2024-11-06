@@ -27,13 +27,7 @@ function ProfileDropdown(props) {
         <div className="absolute right-0 mt-2 w-48 bg-galvin-grey text-white  rounded-md shadow-lg z-10">
           <div className="py-1">
             <NavLink
-              to={`/profile/${props.id}`}
-              className="block px-4 py-2 text-sm hover:bg-galvin-green"
-            >
-              Profile
-            </NavLink>
-            <NavLink
-              to="/upload-song"
+              to="/settings/upload-song"
               className="block px-4 py-2 text-sm hover:bg-galvin-green"
             >
               Upload Song

@@ -22,3 +22,19 @@ export const fetchUserData = createAsyncThunk(
     }
   }
 );
+
+// Thunk for updating user data
+export const updateUserData = createAsyncThunk(
+  "user/updateUserData",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axiosInstance.put("/auth/updateUserData", data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Error in updating user"
+      );
+    }
+  }
+);

@@ -27,7 +27,8 @@ const UploadSong = () => {
   const [userId, setUserId, removeUserId] = useCookie("userId");
   console.log("userId: ", userId);
   useEffect(() => {
-    async function fetchAlbumPlaylist() {
+    setValue("createUnder", "album");
+    async function fetchUserDetails() {
       try {
         console.log("userId: ", userId);
         const response = await dispatch(fetchUserData({ id: userId }));
@@ -38,7 +39,7 @@ const UploadSong = () => {
         setAlbums(response.payload.user.albums);
       } catch (error) {}
     }
-    fetchAlbumPlaylist();
+    fetchUserDetails();
   }, [userId, dispatch]);
 
   const handleAlbumChange = (event) => {

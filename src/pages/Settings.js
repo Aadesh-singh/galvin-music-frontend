@@ -10,7 +10,7 @@ const Settings = () => {
 
   return (
     <section id={"settings"} className="bg-neutral-950 p-2 h-[100vh]">
-      <div className="container">
+      <div className="w-full">
         <Header />
         <hr />
       </div>

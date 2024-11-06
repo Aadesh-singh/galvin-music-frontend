@@ -10,7 +10,7 @@ import {
   updatePassword,
   uploadSong,
 } from "./thunk/authThunk";
-import { fetchUserData } from "./thunk/userThunk";
+import { fetchUserData, updateUserData } from "./thunk/userThunk";
 
 const initialState = {
   isAuthenticated: false,
@@ -147,7 +147,7 @@ const authSlice = createSlice({
         state.error = action.payload;
       });
 
-    // Login
+    // fetchUserdata
     builder
       .addCase(fetchUserData.pending, (state) => {
         state.status = "loading";
@@ -158,6 +158,20 @@ const authSlice = createSlice({
         state.user = action.payload.user;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+    // updateUserData
+    builder
+      .addCase(updateUserData.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

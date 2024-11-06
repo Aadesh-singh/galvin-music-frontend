@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import LoadingButton from "../ui/LoadingButton";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ const Profile = () => {
     handleSubmit,
     setValue,
     reset,
+    control,
     formState: { errors },
   } = useForm();
   const { status } = useSelector((state) => state.auth);
@@ -50,11 +51,28 @@ const Profile = () => {
     fetchUserDetails();
   }, [userId, dispatch, setValue]);
 
+  const [coverPreview, setCoverPreview] = useState(null);
+
+  const handleCoverPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCoverPreview(URL.createObjectURL(file)); // Generate preview URL
+    }
+  };
+
   const submitHandler = async (data) => {
     console.log("data", data);
-
     try {
-      let res = await dispatch(updateUserData(data)).unwrap();
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("email", data.email);
+      if (data.profilePhoto) {
+        formData.append("profilePhoto", data.profilePhoto[0]); // Assuming `data.profilePhoto` is an array of files
+      }
+
+      let res = await dispatch(updateUserData(formData)).unwrap();
       console.log("res: ", res);
       if (res.status === 200) {
         let response = await dispatch(fetchUserData(data)).unwrap();
@@ -103,9 +121,62 @@ const Profile = () => {
               <span className="m-3">Profile</span>{" "}
             </h1>
             <div className="flex justify-center items-center relative">
-              <div className="cursor-pointer flex mx-auto items-center justify-center px-[3.7rem] py-[2rem] w-16 rounded-full bg-galvin-grey text-white font-bold">
-                {profileIcon}
-              </div>
+              {!isEdit && (
+                <div className="cursor-pointer flex mx-auto items-center justify-center px-[3.7rem] py-[2rem] w-16 rounded-full bg-galvin-grey text-white font-bold">
+                  {profileIcon}
+                </div>
+              )}
+              {isEdit && (
+                <div
+                  className={`flex flex-col justify-center items-start m-2 ${
+                    coverPreview ? " " : "w-[40%]"
+                  }`}
+                >
+                  <Controller
+                    name="profilePhoto"
+                    control={control}
+                    rules={{ required: "Please select a cover photo" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <>
+                        <label
+                          htmlFor="file-upload-cover"
+                          className={`h-[100px] ${
+                            coverPreview ? "w-[100px]" : "w-full"
+                          }`}
+                        >
+                          {coverPreview ? (
+                            <img
+                              src={coverPreview}
+                              alt="Cover Preview"
+                              className="w-full h-full object-cover rounded-full"
+                            />
+                          ) : (
+                            <div className="cursor-pointer w-[100px] h-[100px] flex mx-auto items-center justify-center px-[3.7rem] py-[2rem] rounded-full bg-galvin-grey text-white font-bold">
+                              {profileIcon}
+                            </div>
+                          )}
+                        </label>
+                        <input
+                          id="file-upload-cover"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            handleCoverPhotoChange(e); // Handle cover photo change
+                            field.onChange(e.target.files); // Update field value directly
+                          }}
+                        />
+                        {error && (
+                          <span className="text-red-500 mt-1">
+                            {error.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </div>
+              )}
+
               {!isEdit && (
                 <div
                   onClick={enableEdit}

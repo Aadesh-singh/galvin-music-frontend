@@ -28,7 +28,11 @@ export const updateUserData = createAsyncThunk(
   "user/updateUserData",
   async (data, thunkAPI) => {
     try {
-      const response = await axiosInstance.put("/auth/updateUserData", data);
+      const response = await axiosInstance.put("/auth/updateUserData", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
     } catch (error) {
       console.log(error);

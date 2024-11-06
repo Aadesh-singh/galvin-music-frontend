@@ -1,14 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../apis/axios";
 
-//Thunk for create song
+//Thunk for create Album
 export const createAlbum = createAsyncThunk(
   "album/createAlbum",
   async (formdata, thunkAPI) => {
     try {
       const response = await axiosInstance.post(
         `/album/create-album`,
-        formdata
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data;
     } catch (error) {

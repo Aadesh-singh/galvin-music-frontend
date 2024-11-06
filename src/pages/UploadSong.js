@@ -8,12 +8,12 @@ import { uploadSong } from "../store/thunk/songThunk";
 import { toast } from "react-toastify";
 import LoadingButton from "../ui/LoadingButton";
 import useCookie from "../hooks/useCookie";
-import { fetchPlaylistOfUser } from "../store/thunk/playlistThunk";
+// import { fetchPlaylistOfUser } from "../store/thunk/playlistThunk";
 import { fetchUserData } from "../store/thunk/userThunk";
 
 const UploadSong = () => {
-  const { status: albumStatus } = useSelector((state) => state.album);
-  const { status: playlistStatus } = useSelector((state) => state.playlist);
+  // const { status: albumStatus } = useSelector((state) => state.album);
+  // const { status: playlistStatus } = useSelector((state) => state.playlist);
   const { status: songStatus } = useSelector((state) => state.song);
 
   const [fileName, setFileName] = useState("");
@@ -78,6 +78,15 @@ const UploadSong = () => {
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
       setFileName(e.target.files[0].name);
+    }
+  };
+
+  const [coverPhotoName, setCoverPhotoName] = useState("");
+
+  const handleCoverPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCoverPhotoName(file.name);
     }
   };
 
@@ -156,6 +165,9 @@ const UploadSong = () => {
     if (data.song) {
       formData.append("song", data.song[0]); // Assuming `data.song` is an array of files
     }
+    if (data.coverPhoto) {
+      formData.append("coverPhoto", data.coverPhoto[0]); // Assuming `data.song` is an array of files
+    }
 
     try {
       await dispatch(uploadSong(formData)).unwrap();
@@ -165,6 +177,7 @@ const UploadSong = () => {
       setLyricByList([]);
       setMusicByList([]);
       setFileName("");
+      setCoverPhotoName("");
     } catch (error) {
       console.log("Error in uploading song", error);
       toast.error("Error in uploading song: " + error.message);
@@ -504,6 +517,41 @@ const UploadSong = () => {
                           className="hidden"
                           onChange={(e) => {
                             handleFileChange(e);
+                            field.onChange(e.target.files); // Update field value directly
+                          }}
+                        />
+                        {error && (
+                          <span className="text-red-500 mt-1">
+                            {error.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
+                </div>
+                {/* Cover Photo Upload */}
+                <div className="flex flex-col items-start m-2 w-[40%]">
+                  <Controller
+                    name="coverPhoto"
+                    control={control}
+                    rules={{ required: "Please select a cover photo" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <>
+                        <label
+                          htmlFor="file-upload-cover"
+                          className="bg-galvin-grey text-white w-full p-2 rounded-md cursor-pointer hover:bg-gray-700"
+                        >
+                          {coverPhotoName
+                            ? `Selected: ${coverPhotoName}`
+                            : "Choose a cover photo*"}
+                        </label>
+                        <input
+                          id="file-upload-cover"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            handleCoverPhotoChange(e); // Handle cover photo change
                             field.onChange(e.target.files); // Update field value directly
                           }}
                         />

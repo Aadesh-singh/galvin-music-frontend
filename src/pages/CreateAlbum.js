@@ -57,6 +57,15 @@ const CreateAlbum = () => {
     setInputValue(e.target.value); // Update input value on every keystroke
   };
 
+  const [coverPhotoName, setCoverPhotoName] = useState("");
+
+  const handleCoverPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCoverPhotoName(file.name);
+    }
+  };
+
   //hashtag
   const addHashTag = (e) => {
     e.preventDefault();
@@ -84,6 +93,10 @@ const CreateAlbum = () => {
     formData.append("hashtags", JSON.stringify(data.hashtag)); // Convert array to JSON string
     formData.append("description", data.description);
 
+    if (data.coverPhoto) {
+      formData.append("coverPhoto", data.coverPhoto[0]); // Assuming `data.coverphoto` is an array of files
+    }
+
     try {
       await dispatch(createAlbum(formData)).unwrap();
       toast.success("Album Created Successfully.");
@@ -92,6 +105,7 @@ const CreateAlbum = () => {
       setDebouncedValue("");
       setIsTitleAvailable(null);
       sethashTagList([]);
+      setCoverPhotoName("");
     } catch (error) {
       console.log("Error in creating Album", error);
       toast.error("Error in creating Album: " + error.message);
@@ -214,6 +228,41 @@ const CreateAlbum = () => {
                       Album Description is required.
                     </span>
                   )}
+                </div>
+                {/* Cover Photo Upload */}
+                <div className="flex flex-col items-start m-2 w-[40%]">
+                  <Controller
+                    name="coverPhoto"
+                    control={control}
+                    rules={{ required: "Please select a cover photo" }}
+                    render={({ field, fieldState: { error } }) => (
+                      <>
+                        <label
+                          htmlFor="file-upload-cover"
+                          className="bg-galvin-grey text-white w-full p-2 rounded-md cursor-pointer hover:bg-gray-700"
+                        >
+                          {coverPhotoName
+                            ? `Selected: ${coverPhotoName}`
+                            : "Choose a cover photo*"}
+                        </label>
+                        <input
+                          id="file-upload-cover"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            handleCoverPhotoChange(e); // Handle cover photo change
+                            field.onChange(e.target.files); // Update field value directly
+                          }}
+                        />
+                        {error && (
+                          <span className="text-red-500 mt-1">
+                            {error.message}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  />
                 </div>
 
                 <button

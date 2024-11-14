@@ -36,14 +36,13 @@ export const playlistTitleExist = createAsyncThunk(
   }
 );
 
-//Thunk for playlistTitleExist
-export const fetchPlaylistOfUser = createAsyncThunk(
-  "playlist/fetchPlaylistOfUser",
+//Thunk for getAllPlaylistOfUser
+export const getAllPlaylistOfUser = createAsyncThunk(
+  "playlist/getAllPlaylistOfUser",
   async (formData, thunkAPI) => {
     try {
-      const response = await axiosInstance.post(
-        `/playlist/fetchPlaylistOfUser`,
-        formData
+      const response = await axiosInstance.get(
+        `/playlist/getAllPlaylistOfUser`
       );
       return response.data;
     } catch (error) {

@@ -6,54 +6,24 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { FaCheck } from "react-icons/fa6";
 import { useEffect, useRef, useState } from "react";
 import PlaylistSidemenu from "./PlaylistSidemenu";
+import { useDispatch } from "react-redux";
+import { getAllPlaylistOfUser } from "../store/thunk/playlistThunk";
 
-const PlaylistArray = [
-  {
-    id: "liked",
-    name: "Liked Songs",
-    type: "Playlist",
-    creator: "Aadesh Singh",
-    totalSongs: "0",
-    selected: false,
-  },
-  {
-    id: "1",
-    name: "Playlist1",
-    type: "Playlist",
-    creator: "Aadesh Singh",
-    totalSongs: "0",
-    selected: false,
-  },
-  {
-    id: "2",
-    name: "Playlist2",
-    type: "Playlist",
-    creator: "Aadesh Singh",
-    totalSongs: "0",
-    selected: false,
-  },
-  {
-    id: "3",
-    name: "Playlist3",
-    type: "Playlist",
-    creator: "Aadesh Singh",
-    totalSongs: "0",
-    selected: false,
-  },
-  {
-    id: "4",
-    name: "Playlist4",
-    type: "Playlist",
-    creator: "Aadesh Singh",
-    totalSongs: "0",
-    selected: false,
-  },
-];
+const favCollection = {
+  id: "liked",
+  name: "Liked Songs",
+  type: "Playlist",
+  creator: "Aadesh Singh",
+  totalSongs: "0",
+  selected: false,
+};
 
 const Sidebar = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSidebarSearchVisible, setIsSidebarSearchvisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [PlaylistArray, setPlaylistArray] = useState([favCollection]);
   const searchRef = useRef(null);
   const searchClickHandler = () => {
     setIsSidebarSearchvisible((prev) => !prev);
@@ -62,6 +32,21 @@ const Sidebar = (props) => {
   const toggleFilterDropdown = () => {
     setIsFilterOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    //getAllSongs
+    const getAllPlaylistOfUserFn = async () => {
+      try {
+        console.log("called");
+        const resp = await dispatch(getAllPlaylistOfUser()).unwrap();
+        console.log("resp in getting user Playlist", resp);
+        setPlaylistArray([favCollection, ...resp.playlists]);
+      } catch (err) {
+        console.log("Error in getting user Playlist", err);
+      }
+    };
+    getAllPlaylistOfUserFn();
+  }, [dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

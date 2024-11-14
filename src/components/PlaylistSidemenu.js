@@ -39,7 +39,7 @@ const PlaylistSidemenu = (props) => {
                 <TiPin />
               </span>
             )}
-            <span className="m-[1px]">{props.playlist.type}</span>
+            <span className="m-[1px]">Playlist</span>
           </div>
           <GoDotFill className="w-2 h-2" />
 
@@ -49,7 +49,10 @@ const PlaylistSidemenu = (props) => {
               {props.playlist.totalSongs} Songs
             </div>
           ) : (
-            <div className="text-[0.8rem]">{props.playlist.creator}</div>
+            <div className="text-[0.8rem]">
+              {props.playlist.owner.firstName}&nbsp;
+              {props.playlist.owner.lastName}
+            </div>
           )}
         </div>
       </div>

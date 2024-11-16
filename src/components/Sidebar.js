@@ -70,9 +70,9 @@ const Sidebar = (props) => {
   const handlePlaylistClick = (index, id) => {
     console.log("id click", id);
     PlaylistArray.forEach((playlist) => {
-      if (playlist.id === id) {
+      if (playlist._id === id) {
         playlist.selected = true;
-        navigate("/playlist/" + playlist.id);
+        navigate(`/playlist/${index === 0 ? "liked" : playlist._id}`);
       } else {
         playlist.selected = false;
       }
@@ -183,10 +183,10 @@ const Sidebar = (props) => {
         {PlaylistArray.map((playlist, index) => (
           <PlaylistSidemenu
             onClick={() => {
-              handlePlaylistClick(index, playlist.id);
+              handlePlaylistClick(index, playlist._id);
             }}
             playlist={playlist}
-            key={playlist.id}
+            key={playlist._id}
           />
         ))}
       </div>

@@ -62,7 +62,7 @@ const Sidebar = (props) => {
     // Attach the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // Cleanup the event listener on component unmount
+      // Cleanup the event listener on Component Unmount
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSidebarSearchVisible]);

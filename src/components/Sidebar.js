@@ -68,7 +68,7 @@ const Sidebar = (props) => {
   }, [isSidebarSearchVisible]);
 
   const handlePlaylistClick = (index, id) => {
-    console.log("Id click", id);
+    // console.log("Id Click", id);
     PlaylistArray.forEach((playlist) => {
       if (playlist._id === id) {
         playlist.selected = true;

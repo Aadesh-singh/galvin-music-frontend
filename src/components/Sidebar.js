@@ -39,7 +39,7 @@ const Sidebar = (props) => {
       try {
         // console.log("called");
         const resp = await dispatch(getAllPlaylistOfUser()).unwrap();
-        console.log("Resp in Getting user Playlist", resp);
+        console.log("Resp in Getting User Playlist", resp);
         setPlaylistArray([favCollection, ...resp.playlists]);
       } catch (err) {
         console.log("Error in getting user Playlist", err);

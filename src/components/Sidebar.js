@@ -37,7 +37,6 @@ const Sidebar = (props) => {
     //getAllSongs
     const getAllPlaylistOfUserFn = async () => {
       try {
-        // console.log("called");
         const resp = await dispatch(getAllPlaylistOfUser()).unwrap();
         console.log("Resp in Getting User Playlist", resp);
         setPlaylistArray([favCollection, ...resp.playlists]);

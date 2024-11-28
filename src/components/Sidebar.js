@@ -41,7 +41,7 @@ const Sidebar = (props) => {
         console.log("Resp in Getting User Playlist", resp);
         setPlaylistArray([favCollection, ...resp.playlists]);
       } catch (err) {
-        console.log("Error in getting user Playlist", err);
+        console.log("Error in Getting user Playlist", err);
       }
     };
     getAllPlaylistOfUserFn();

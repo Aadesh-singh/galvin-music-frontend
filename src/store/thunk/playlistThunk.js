@@ -52,3 +52,21 @@ export const getAllPlaylistOfUser = createAsyncThunk(
     }
   }
 );
+
+//Thunk for getAllPlaylist
+export const getAllPlaylist = createAsyncThunk(
+  "playlist/getAllPlaylist",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      const response = await axiosInstance.get(
+        `/playlist/getAllPlaylist?page=${data.page}&limit=${data.limit}`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Error in Fetching all playlists"
+      );
+    }
+  }
+);

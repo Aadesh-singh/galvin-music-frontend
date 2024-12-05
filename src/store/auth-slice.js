@@ -8,9 +8,13 @@ import {
   loginWithGoogle,
   sendForgotPasswordLink,
   updatePassword,
-  uploadSong,
+  // uploadSong,
 } from "./thunk/authThunk";
-import { fetchUserData, updateUserData } from "./thunk/userThunk";
+import {
+  fetchUserData,
+  getAllArtists,
+  updateUserData,
+} from "./thunk/userThunk";
 
 const initialState = {
   isAuthenticated: false,
@@ -172,6 +176,20 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(updateUserData.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+    // getAllArtists
+    builder
+      .addCase(getAllArtists.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getAllArtists.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(getAllArtists.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

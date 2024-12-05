@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createPlaylist,
   fetchPlaylistOfUser,
+  getAllPlaylist,
   getAllPlaylistOfUser,
   playlistTitleExist,
 } from "./thunk/playlistThunk";
@@ -54,6 +55,20 @@ const playlistSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(getAllPlaylistOfUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // getAllPlaylist
+    builder
+      .addCase(getAllPlaylist.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getAllPlaylist.fulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addCase(getAllPlaylist.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

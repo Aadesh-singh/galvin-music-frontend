@@ -6,7 +6,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { FaCheck } from "react-icons/fa6";
 import { useEffect, useRef, useState } from "react";
 import PlaylistSidemenu from "./PlaylistSidemenu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllPlaylistOfUser } from "../store/thunk/playlistThunk";
 
 const favCollection = {
@@ -19,6 +19,7 @@ const favCollection = {
 };
 
 const Sidebar = (props) => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSidebarSearchVisible, setIsSidebarSearchvisible] = useState(false);
@@ -34,18 +35,20 @@ const Sidebar = (props) => {
   };
 
   useEffect(() => {
-    //getAllSongs
-    const getAllPlaylistOfUserFn = async () => {
-      try {
-        const resp = await dispatch(getAllPlaylistOfUser()).unwrap();
-        console.log("Resp in Getting User Playlist", resp);
-        setPlaylistArray([favCollection, ...resp.playlists]);
-      } catch (err) {
-        console.log("Error in getting User Playlist", err);
-      }
-    };
-    getAllPlaylistOfUserFn();
-  }, [dispatch]);
+    //getAllPlaylistOfUserFn
+    if (isAuthenticated) {
+      const getAllPlaylistOfUserFn = async () => {
+        try {
+          const resp = await dispatch(getAllPlaylistOfUser()).unwrap();
+          console.log("Resp in Getting User Playlist", resp);
+          setPlaylistArray([favCollection, ...resp.playlists]);
+        } catch (err) {
+          console.log("Error in getting User Playlist", err);
+        }
+      };
+      getAllPlaylistOfUserFn();
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

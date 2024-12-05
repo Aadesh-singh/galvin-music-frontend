@@ -4,7 +4,6 @@ import {
   FaStepBackward,
   FaStepForward,
   FaRandom,
-  FaRedoAlt,
   FaVolumeUp,
   FaExpandAlt,
 } from "react-icons/fa";
@@ -17,11 +16,24 @@ const CurrentSong = () => {
         {/* Left Section: Song Info */}
         <div className="flex items-center gap-4">
           {/* Album Image */}
-          <img
+          {/* <img
             src="/music-512-removebg-preview.png"
             alt="Album Cover"
             className="w-16 h-16 object-cover rounded"
-          />
+          /> */}
+          <div
+            style={{
+              width: "35px",
+              height: "35px",
+              backgroundColor: "#4CB050",
+              maskImage: "url('/image/cd.png')",
+              maskSize: "cover",
+              maskRepeat: "no-repeat",
+              WebkitMaskImage: "url('/image/cd.png')",
+              WebkitMaskSize: "cover",
+              WebkitMaskRepeat: "no-repeat",
+            }}
+          ></div>
 
           {/* Song Details */}
           <div className="flex flex-col">

@@ -19,3 +19,21 @@ export const uploadSong = createAsyncThunk(
     }
   }
 );
+
+// Thunk for getting all artists
+export const getAllTrendingSongs = createAsyncThunk(
+  "song/getAllSongs",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(
+        `/song/getAllSongs?page=${data.page}&limit=${data.limit}`
+      ); //create backend
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Error in getting artist"
+      );
+    }
+  }
+);

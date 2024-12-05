@@ -26,6 +26,7 @@ import Settings from "./pages/Settings";
 import CreateAlbum from "./pages/CreateAlbum";
 import CreatePlaylist from "./pages/CreatePlaylist";
 import Profile from "./pages/Profile";
+import AllTrending from "./pages/AllTrending";
 
 const router = createBrowserRouter([
   // {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
       { path: "/artist/:id", element: <Artist /> },
       { path: "/artists", element: <AllArtist /> },
       { path: "/playlists", element: <AllPlaylists /> },
-      { path: "/trending-songs", element: <AllPlaylists /> },
+      { path: "/trending-songs", element: <AllTrending /> },
     ],
   },
   {

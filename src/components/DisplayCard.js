@@ -1,6 +1,17 @@
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { fetchSong } from "../store/thunk/songThunk";
 
 const DisplayCard = ({ type, playlist, artist, song }) => {
+  const dispatch = useDispatch();
+
+  const playSong = async () => {
+    console.log(song._id);
+    const resp = await dispatch(fetchSong({ id: song._id })).unwrap();
+
+    console.log("song url: ", resp.song.playableUrl);
+  };
+
   return (
     <div className="mx-4">
       <div className="img-container w-[150px] h-[150px] my-5 overflow-hidden">
@@ -70,7 +81,9 @@ const DisplayCard = ({ type, playlist, artist, song }) => {
       {type === "song" && (
         <>
           <div className="text-galvin-text-grey hover:text-galvin-green hover:underline">
-            <div className="cursor-pointer">{song.name}</div>
+            <div onClick={playSong} className="cursor-pointer">
+              {song.name}
+            </div>
           </div>
           <div className="text-galvin-text-grey hover:text-galvin-green hover:underline">
             {song.singers.map((singer) => (

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FaPlay,
   FaPause,
@@ -8,8 +9,14 @@ import {
   FaExpandAlt,
 } from "react-icons/fa";
 import { IoIosRepeat } from "react-icons/io";
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 const CurrentSong = () => {
+  const { currentSong, isSongPlaying } = useSelector((state) => state.song);
+  // const [song, setSong] = useState({});
+  // setSong(currentSong);
+  console.log("current song: ", currentSong);
   return (
     <section className="bg-galvin-bg text-white p-1">
       <div className=" text-white p-1 flex justify-between items-center">
@@ -37,8 +44,16 @@ const CurrentSong = () => {
 
           {/* Song Details */}
           <div className="flex flex-col">
-            <span className="text-lg font-semibold">O Saathi</span>
-            <span className="text-gray-400 text-sm">Atif Aslam, Arko</span>
+            <span className="text-lg font-semibold">
+              {currentSong?.name || "Play Song"}
+            </span>
+            <span className="text-gray-400 text-sm">
+              {currentSong?.singers.map((singer) => (
+                <NavLink key={singer} to={`/artist/${singer}`}>
+                  {singer}
+                </NavLink>
+              ))}
+            </span>
           </div>
 
           {/* Add Icon */}

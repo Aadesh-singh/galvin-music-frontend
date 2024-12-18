@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllTrendingSongs, uploadSong } from "./thunk/songThunk";
+import { fetchSong, getAllTrendingSongs, uploadSong } from "./thunk/songThunk";
 
 const initialState = {
   currentSong: null,
@@ -36,6 +36,22 @@ const songSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(getAllTrendingSongs.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // fetchSong
+    builder
+      .addCase(fetchSong.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchSong.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.currentSong = action.payload.song;
+        state.isSongPlaying = true;
+      })
+      .addCase(fetchSong.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

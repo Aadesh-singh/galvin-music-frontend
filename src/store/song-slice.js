@@ -6,6 +6,7 @@ const initialState = {
   isSongPlaying: false,
   loading: false,
   error: null,
+  songQueue: [],
 };
 
 const songSlice = createSlice({
@@ -49,6 +50,7 @@ const songSlice = createSlice({
       .addCase(fetchSong.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.currentSong = action.payload.song;
+        state.songQueue.push(action.payload.song);
         state.isSongPlaying = true;
       })
       .addCase(fetchSong.rejected, (state, action) => {

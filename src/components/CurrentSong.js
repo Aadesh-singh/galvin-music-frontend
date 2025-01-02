@@ -25,11 +25,11 @@ const CurrentSong = () => {
   // console.log("current song: ", currentSong);
 
   // commet for time being
-  // useEffect(() => {
-  //   if (currentSong?.playableUrl) {
-  //     handlePlayPause();
-  //   }
-  // }, [currentSong]);
+  useEffect(() => {
+    if (currentSong?.playableUrl) {
+      handlePlayPause();
+    }
+  }, [currentSong]);
 
   const handlePlayPause = () => {
     if (!playing) {
